@@ -8,6 +8,12 @@ def execute_query(cur, query):
     except OperationalError as e:
         print("ERROR:\n", e)
 
+def create_tables(cur):
+    f = open("./SQL/init.sql", "r").read().split("\n")
+
+    book_query = "".join(f[3:15])
+
+    execute_query(cur, book_query)
 
 def create_database():
     con = psycopg2.connect(
@@ -33,4 +39,8 @@ def create_database():
         password="3005proj")
 
     con.autocommit = True
-    return con.cursor()
+    cur = con.cursor()
+
+    create_tables(cur)
+
+    return cur
