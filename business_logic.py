@@ -8,6 +8,13 @@ def execute_query(cur, query):
     except OperationalError as e:
         print("ERROR:\n", e)
 
+def login(cur, user, password):
+    return
+
+def search(cur, field, val):
+    f = open("./SQL/functions.sql", "r").read().split("\n")
+    cur.execute(f[0:3], (field, val))
+    return cur.fetchall()
 
 def create_tables(cur):
     f = open("./SQL/init.sql", "r").read().split("\n")
@@ -85,19 +92,19 @@ def add_dummy_data(cur):
     written_by_data = "".join(f[187:199])
     execute_query(cur, written_by_data)
 
-    has_genre_data = "".join(f[200:211])
+    has_genre_data = "".join(f[200:213])
     execute_query(cur, has_genre_data)
 
-    includes_data = "".join(f[212:220])
+    includes_data = "".join(f[214:222])
     execute_query(cur, includes_data)
 
-    paid_with_data = "".join(f[221:226])
+    paid_with_data = "".join(f[223:228])
     execute_query(cur, paid_with_data)
 
-    charges_to_data = "".join(f[227:231])
+    charges_to_data = "".join(f[229:234])
     execute_query(cur, charges_to_data)
 
-    ships_to_data = "".join(f[232:235])
+    ships_to_data = "".join(f[235:238])
     execute_query(cur, ships_to_data)
 
 def connect_to_db():
@@ -121,8 +128,6 @@ def create_database():
 
     con.autocommit = True
     cur = con.cursor()
-
-
 
     drop_query = "DROP DATABASE IF EXISTS \"LookInnaBook\";"
     execute_query(cur, drop_query)
