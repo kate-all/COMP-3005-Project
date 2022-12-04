@@ -25,9 +25,9 @@ def main():
 
 
     first_time = ""
-    while first_time == "":
+    while first_time != "y" and first_time != "n":
         first_time = input("Is this your first time using our CLI app? (y/n) ")
-        if first_time == "":
+        if first_time != "y" and first_time != "n":
             print("Oops! You have to tell us if it's your first time using the app. I promise it's relevant!")
 
     if first_time == "y":
@@ -39,9 +39,9 @@ def main():
         cur = bl.connect_to_db()
 
     user_type = ""
-    while user_type == "":
+    while user_type != "c" and user_type != "e":
         user_type = input("To get started, please tell us, are you a customer or an employee? (c/e) ")
-        if user_type == "":
+        if user_type != "c" and user_type != "e":
             print("Oops! You have to enter c for customer or e for employee")
 
     print_menu(user_type)
