@@ -51,10 +51,53 @@ def create_tables(cur):
     charges_to_query = "".join(f[107:116])
     execute_query(cur, charges_to_query)
 
-    ships_to_query = "".join(f[117:])
+    ships_to_query = "".join(f[117:128])
     execute_query(cur, ships_to_query)
 
+def add_dummy_data(cur):
+    f = open("./SQL/init.sql", "r").read().split("\n")
 
+    publisher_data = "".join(f[129:134])
+    execute_query(cur, publisher_data)
+
+    book_data = "".join(f[135:143])
+    execute_query(cur, book_data)
+
+    address_data = "".join(f[144:149])
+    execute_query(cur, address_data)
+
+    orders_data = "".join(f[150:155])
+    execute_query(cur, orders_data)
+
+    author_data = "".join(f[156:163])
+    execute_query(cur, author_data)
+
+    credit_card_data = "".join(f[164:169])
+    execute_query(cur, credit_card_data)
+
+    account_data = "".join(f[170:175])
+    execute_query(cur, account_data)
+
+    genre_data = "".join(f[176:186])
+    execute_query(cur, genre_data)
+
+    written_by_data = "".join(f[187:199])
+    execute_query(cur, written_by_data)
+
+    has_genre_data = "".join(f[200:211])
+    execute_query(cur, has_genre_data)
+
+    includes_data = "".join(f[212:220])
+    execute_query(cur, includes_data)
+
+    paid_with_data = "".join(f[221:226])
+    execute_query(cur, paid_with_data)
+
+    charges_to_data = "".join(f[227:231])
+    execute_query(cur, charges_to_data)
+
+    ships_to_data = "".join(f[232:235])
+    execute_query(cur, ships_to_data)
 
 
 def create_database():
@@ -84,5 +127,6 @@ def create_database():
     cur = con.cursor()
 
     create_tables(cur)
+    add_dummy_data(cur)
 
     return cur
