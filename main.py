@@ -1,3 +1,3 @@
 import business_logic as bl
 
-cur = bl.create_connection()
+cur = bl.create_database()
