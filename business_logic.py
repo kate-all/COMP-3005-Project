@@ -54,6 +54,7 @@ def create_tables(cur):
     ships_to_query = "".join(f[117:128])
     execute_query(cur, ships_to_query)
 
+
 def add_dummy_data(cur):
     f = open("./SQL/init.sql", "r").read().split("\n")
 
@@ -99,6 +100,15 @@ def add_dummy_data(cur):
     ships_to_data = "".join(f[232:235])
     execute_query(cur, ships_to_data)
 
+def connect_to_db():
+    con = psycopg2.connect(
+        database="LookInnaBook",
+        user="postgres",
+        password="3005proj")
+
+    con.autocommit = True
+    return con.cursor()
+
 
 def create_database():
     con = psycopg2.connect(
@@ -112,19 +122,15 @@ def create_database():
     con.autocommit = True
     cur = con.cursor()
 
+
+
     drop_query = "DROP DATABASE IF EXISTS \"LookInnaBook\";"
     execute_query(cur, drop_query)
 
     create_query = "CREATE DATABASE \"LookInnaBook\";"
     execute_query(cur, create_query)
 
-    con = psycopg2.connect(
-        database="LookInnaBook",
-        user="postgres",
-        password="3005proj")
-
-    con.autocommit = True
-    cur = con.cursor()
+    cur = connect_to_db()
 
     create_tables(cur)
     add_dummy_data(cur)
