@@ -1,8 +1,15 @@
 import business_logic as bl
 
 
-customer_menu = {"menu": "Show this command menu again", "search <field> <value>": "Search for a book by field. Ex. search genre romance"}
-employee_menu = {"menu": "Show this command menu again"}
+customer_menu = {"menu": "Show this command menu again",
+                 "search <field> <value>": "Search for a book by field. Ex. search genre romance",
+                 "search <field> <operator> <value>": "Search for a book by numerical value of price or page count (ex. search page_count < 800",
+                 "exit": "Exit this application."
+                 }
+
+
+employee_menu = {"menu": "Show this command menu again",
+                 "exit": "Exit this application."}
 
 
 def print_menu(user_type):
@@ -54,12 +61,20 @@ def main():
             print_menu(user_type)
 
         elif command == "search":
-            output = bl.search(cur, full_command[1], " ".join(full_command[2:]))
+            output = bl.search(cur, full_command[1], full_command[2:])
             if output == []:
                 print("There are no books that match your search query.")
             else:
                 print(output)
 
-        break
+        elif command == "exit":
+            is_sure = input("Are you sure you want to exit? Your basket will be emptied. (y/n) ")
+
+            while is_sure != "y" and is_sure != "n":
+                is_sure = input("Oops! Please type y to exit and n to continue in this app.")
+
+            if is_sure == 'y':
+                break
+
 
 main()

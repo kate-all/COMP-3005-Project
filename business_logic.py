@@ -12,11 +12,26 @@ def login(cur, user, password):
     return
 
 def search(cur, field, val):
-    if field == "title":
-        try:
-            cur.execute("SELECT (isbn, title, page_count, price, in_stock) FROM Book WHERE title=%s;", (val,))
-        except OperationalError as e:
-            print("SEARCH ERROR:\n", e)
+    try:
+        if field == "title":
+            val = " ".join(val)
+            cur.execute("SELECT (isbn, title) FROM Book WHERE title=%s;", (val,))
+
+        elif field == "isbn":
+            cur.execute("SELECT (isbn, title) FROM Book WHERE isbn=%s;", (val,))
+
+        elif field == "price":
+            if val[0] == "<":
+                cur.execute("SELECT (isbn, title) FROM Book WHERE price < %s;", (val[1],))
+
+            elif val[0] == ">":
+                cur.execute("SELECT (isbn, title) FROM Book WHERE price > %s;", (val[1],))
+
+            else:
+                cur.execute("SELECT (isbn, title) FROM Book WHERE price = %s;", (val[1],))
+
+    except OperationalError as e:
+        print("SEARCH ERROR:\n", e)
 
     return cur.fetchall()
 
