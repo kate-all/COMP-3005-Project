@@ -7,6 +7,7 @@ customer_menu = {"menu": "Show this command menu again",
                  "search available": "See all available books",
                  "select <isbn>": "Select a book by its isbn to see more information",
                  "unselect": "Unselect current selected book",
+                 "login": "Login to your account",
                  "add_to_basket": "Add the selected book to your basket",
                  "exit": "Exit this application."
                  }
@@ -35,6 +36,7 @@ def print_menu(user_type):
 def main():
     cur = None
     selected = None
+    logged_in = False
     basket = []
 
     print("Hello! Welcome to LookInnaBook!\n" +
@@ -88,6 +90,16 @@ def main():
                 print("No book is selected")
             else:
                 selected = None
+
+        elif command == "login":
+            username = input("Username: ")
+            password = input("Password: ")
+            success = bl.login(cur, username, password)
+            if not success:
+                print("Username or password incorrect")
+            else:
+                logged_in = True
+                print("Login successful")
 
         elif command == "add_to_basket":
             if selected == None:

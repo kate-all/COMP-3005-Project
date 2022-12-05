@@ -9,7 +9,15 @@ def execute_query(cur, query):
         print("ERROR:\n", e)
 
 def login(cur, user, password):
-    return
+    cur.execute(""" SELECT * FROM Account
+    WHERE username = %s AND
+    password = %s
+    """, (user, password))
+
+    if cur.fetchall() == []:
+        return False
+
+    return True
 
 def get_book(cur, isbn, user_type):
     if user_type == 'c':
