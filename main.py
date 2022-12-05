@@ -8,6 +8,7 @@ customer_menu = {"menu": "Show this command menu again",
                  "select <isbn>": "Select a book by its isbn to see more information",
                  "unselect": "Unselect current selected book",
                  "login": "Login to your account",
+                 "logout": "Log out of your account",
                  "add_to_basket": "Add the selected book to your basket",
                  "exit": "Exit this application."
                  }
@@ -43,10 +44,9 @@ def main():
       "There's plenty to explore in our store.\n")
 
     first_time = ""
+    first_time = input("Is this your first time using our CLI app? (y/n) ")
     while first_time != "y" and first_time != "n":
-        first_time = input("Is this your first time using our CLI app? (y/n) ")
-        if first_time != "y" and first_time != "n":
-            print("Oops! You have to tell us if it's your first time using the app. I promise it's relevant!")
+        print("Oops! You have to tell us if it's your first time using the app. I promise it's relevant!")
 
     if first_time == "y":
         print("Welcome! \nGenerating our database for you... This may take a moment")
@@ -56,11 +56,9 @@ def main():
         print("Welcome back!")
         cur = bl.connect_to_db()
 
-    user_type = ""
+    user_type = input("To get started, please tell us, are you a customer or an employee? (c/e) ")
     while user_type != "c" and user_type != "e":
-        user_type = input("To get started, please tell us, are you a customer or an employee? (c/e) ")
-        if user_type != "c" and user_type != "e":
-            print("Oops! You have to enter c for customer or e for employee")
+        print("Oops! You have to enter c for customer or e for employee")
 
     print_menu(user_type)
 
@@ -100,6 +98,14 @@ def main():
             else:
                 logged_in = True
                 print("Login successful")
+
+        elif command == "logout":
+            if not logged_in:
+                print("You're not logged in")
+
+            else:
+                logged_in = False
+                print("Logout successful")
 
         elif command == "add_to_basket":
             if selected == None:
