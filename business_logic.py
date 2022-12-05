@@ -30,6 +30,19 @@ def search(cur, field, val):
             else:
                 cur.execute("SELECT (isbn, title) FROM Book WHERE price = %s;", (val[1],))
 
+        elif field == "page_count":
+            if val[0] == "<":
+                cur.execute("SELECT (isbn, title) FROM Book WHERE page_count < %s;", (val[1],))
+
+            elif val[0] == ">":
+                cur.execute("SELECT (isbn, title) FROM Book WHERE page_count > %s;", (val[1],))
+
+            else:
+                cur.execute("SELECT (isbn, title) FROM Book WHERE page_count = %s;", (val[1],))
+
+        else:
+            return None
+
     except OperationalError as e:
         print("SEARCH ERROR:\n", e)
 
