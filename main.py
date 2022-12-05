@@ -54,8 +54,11 @@ def main():
             print_menu(user_type)
 
         elif command == "search":
-            output = bl.search(cur, full_command[1], full_command[2])
-            print(output)
+            output = bl.search(cur, full_command[1], " ".join(full_command[2:]))
+            if output == []:
+                print("There are no books that match your search query.")
+            else:
+                print(output)
 
         break
 

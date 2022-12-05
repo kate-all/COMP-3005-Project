@@ -12,6 +12,12 @@ def login(cur, user, password):
     return
 
 def search(cur, field, val):
+    if field == "title":
+        try:
+            cur.execute("SELECT (isbn, title, page_count, price, in_stock) FROM Book WHERE title=%s;", (val,))
+        except OperationalError as e:
+            print("SEARCH ERROR:\n", e)
+
     return cur.fetchall()
 
 def create_tables(cur):
