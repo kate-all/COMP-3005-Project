@@ -7,6 +7,7 @@ customer_menu = {"menu": "Show this command menu again",
                  "search available": "See all available books",
                  "select <isbn>": "Select a book by its isbn to see more information",
                  "unselect": "Unselect current selected book",
+                 "add_to_basket": "Add the selected book to your basket",
                  "exit": "Exit this application."
                  }
 
@@ -88,6 +89,15 @@ def main():
             else:
                 selected = None
 
+        elif command == "add_to_basket":
+            if selected == None:
+                print("No book selected")
+
+            else:
+                basket.append(selected)
+                print("Added", selected, "to basket")
+                selected = None
+
         elif command == "exit":
             is_sure = input("Are you sure you want to exit? Your basket will be emptied. (y/n) ")
 
@@ -95,6 +105,7 @@ def main():
                 is_sure = input("Oops! Please type y to exit and n to continue in this app.")
 
             if is_sure == 'y':
+                print("Thank you for shopping with us today!")
                 break
 
 
