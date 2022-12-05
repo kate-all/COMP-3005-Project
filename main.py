@@ -9,6 +9,7 @@ customer_menu = {"menu": "Show this command menu again",
                  "unselect": "Unselect current selected book",
                  "login": "Login to your account",
                  "logout": "Log out of your account",
+                 "register": "Register for an account",
                  "add_to_basket": "Add the selected book to your basket",
                  "exit": "Exit this application."
                  }
@@ -106,6 +107,23 @@ def main():
             else:
                 logged_in = False
                 print("Logout successful")
+
+        elif command == "register":
+            username = input("Please enter a username: ")
+            valid = bl.is_valid_username(cur, username)
+            while not valid:
+                print(username, "has already been taken.\nLet's get creative!")
+                username = input("Please enter a username: ")
+                valid = bl.is_valid_username(cur, username)
+
+            password = input("Please enter a password: ")
+
+            success = bl.create_new_account(cur, username, password)
+            if not success:
+                print("Account registration unsuccessful")
+            else:
+                print("Account sucessfully created.\nWelcome to the LookInnaBook family!")
+                logged_in = True
 
         elif command == "add_to_basket":
             if selected == None:

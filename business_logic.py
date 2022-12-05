@@ -11,10 +11,28 @@ def execute_query(cur, query):
 def login(cur, user, password):
     cur.execute(""" SELECT * FROM Account
     WHERE username = %s AND
-    password = %s
+    password = %s;
     """, (user, password))
 
     if cur.fetchall() == []:
+        return False
+
+    return True
+
+def is_valid_username(cur, user):
+    cur.execute("""SELECT * FROM Account
+    WHERE username = %s;
+    """, (user,))
+
+    if cur.fetchall() == []:
+        return True
+    return False
+
+def create_new_account(cur, user, password):
+    try:
+        cur.execute("INSERT INTO Account (username, password) VALUES (%s, %s);", (user, password))
+    except OperationalError as e:
+        print("ERROR", e)
         return False
 
     return True
