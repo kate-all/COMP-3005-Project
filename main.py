@@ -4,6 +4,7 @@ import business_logic as bl
 customer_menu = {"menu": "Show this command menu again",
                  "search <field> <value>": "Search for a book by field. Ex. search genre romance",
                  "search <field> <operator> <value>": "Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\tDo not include $ in the price",
+                 "search available": "See all available books",
                  "exit": "Exit this application."
                  }
 
@@ -63,7 +64,7 @@ def main():
         elif command == "search":
             output = bl.search(cur, full_command[1], full_command[2:])
             if output == None:
-                print("Please enter a valid search field.\nThe options are: title, isbn, page_count, price")
+                print("Please enter a valid search field.\nThe options are: title, isbn, page_count, price, genre, author, and available")
             elif output == []:
                 print("There are no books that match your search query.")
             else:

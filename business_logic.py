@@ -40,6 +40,26 @@ def search(cur, field, val):
             else:
                 cur.execute("SELECT (isbn, title) FROM Book WHERE page_count = %s;", (val[1],))
 
+        elif field == "genre":
+           cur.execute("""
+                SELECT (isbn, title)
+                FROM Book, Has_Genre
+                WHERE Book.isbn = Has_Genre.book_isbn AND
+                    Has_Genre.genre = %s;
+                """, (val[0],))
+
+        elif field == "author":
+            cur.execute("""
+                SELECT (isbn, title)
+                FROM Book, Written_By, Author 
+                WHERE Book.isbn = Written_by.book_isbn AND
+                    Written_by.author_id = Author.author_id AND
+                    Author.last_name = %s;
+                """, (" ".join(val),))
+
+        elif field == "available":
+            cur.execute("SELECT (isbn, title) FROM Book WHERE in_stock > 0;")
+
         else:
             return None
 
