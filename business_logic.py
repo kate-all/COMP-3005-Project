@@ -20,7 +20,7 @@ def create_tables(cur):
     publisher_query = "".join(f[3:10])
     execute_query(cur, publisher_query)
 
-    book_query = "".join(f[11:24])
+    book_query = "".join(f[11:25])
     execute_query(cur, book_query)
 
     address_query = "".join(f[26:35])
