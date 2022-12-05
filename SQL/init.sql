@@ -18,6 +18,7 @@ CREATE TABLE BOOK (
     num_sold_last_month INT,
     percent_for_publisher FLOAT NOT NULL,
     wholesale_price FLOAT NOT NULL,
+    in_stock INT NOT NULL,
     publisher_id CHAR(10) NOT NULL,
     FOREIGN KEY (publisher_id)
                   REFERENCES Publisher(publisher_id)
@@ -133,14 +134,14 @@ VALUES
     ('bcdefghijk', 'Not Penguin Books', 'notapenguin@gmail.com', 1234567891, 12345678901234568),
     ('theoldbard', 'Shakespeare Simplified', 'shake@gmail.com', 1234567895, 12345678901234569);
 
-INSERT INTO BOOK  (isbn, title, page_count, price, num_sold, num_sold_last_month, percent_for_publisher, wholesale_price, publisher_id)
+INSERT INTO BOOK  (isbn, title, page_count, price, num_sold, num_sold_last_month, percent_for_publisher, wholesale_price, in_stock, publisher_id)
 VALUES
-    (1234567890123, 'Murder On The Rue Morgue', 265, 12.99, 2, 1, 30, 5.99, 'abcdefghij'),
-    (0987654321098, 'Don Quixote', 450, 15.49, 5, 2, 35, 6.99, 'abcdefghij'),
-    (2468013579123, 'Oliver Twist', 1000, 25.00, 1, 0, 20, 10.00, 'bcdefghijk'),
-    (1357924680123, 'Othello (w/ translations)', 300, 35.00, 10, 1, 40, 20.00, 'theoldbard'),
-    (1357924680124, 'Merchant of Venice (w/ translations)', 350, 35.00, 18, 1, 40, 20.00, 'theoldbard'),
-    (1357924680122, 'Romeo and Juliet (w/ translations)', 375, 35.00, 5, 4, 40, 20.00, 'theoldbard');
+    (1234567890123, 'Murder On The Rue Morgue', 265, 12.99, 2, 1, 30, 5.99, 5, 'abcdefghij'),
+    (0987654321098, 'Don Quixote', 450, 15.49, 5, 2, 35, 6.99, 5, 'abcdefghij'),
+    (2468013579123, 'Oliver Twist', 1000, 25.00, 1, 0, 20, 10.00, 5, 'bcdefghijk'),
+    (1357924680123, 'Othello (w/ translations)', 300, 35.00, 10, 1, 40, 20.00, 5, 'theoldbard'),
+    (1357924680124, 'Merchant of Venice (w/ translations)', 350, 35.00, 18, 1, 40, 20.00, 5, 'theoldbard'),
+    (1357924680122, 'Romeo and Juliet (w/ translations)', 375, 35.00, 5, 4, 40, 20.00, 5, 'theoldbard');
 
 INSERT INTO ADDRESS (street_num, street, city, province, country, postal_code)
 VALUES
@@ -177,8 +178,8 @@ VALUES
 INSERT INTO GENRE (name)
 VALUES
     ('Mystery'),
-    ('Classic English'),
-    ('Classic Spanish'),
+    ('Classic'),
+    ('Spanish'),
     ('Romance'),
     ('Suspense'),
     ('Sci-Fi'),
@@ -201,13 +202,15 @@ VALUES
 INSERT INTO HAS_GENRE (book_isbn, genre)
 VALUES
     (1234567890123, 'Mystery'),
-    (0987654321098, 'Classic Spanish'),
-    (2468013579123, 'Classic English'),
-    (1357924680123, 'Classic English'),
+    (0987654321098, 'Spanish'),
+    (0987654321098, 'Classic'),
+    (2468013579123, 'Classic'),
+    (1357924680123, 'Classic'),
     (1357924680123, 'Suspense'),
-    (1357924680124, 'Classic English'),
+    (1357924680124, 'Classic'),
     (1357924680124, 'Suspense'),
-    (1357924680122, 'Classic English'),
+    (1357924680124, 'Romance'),
+    (1357924680122, 'Classic'),
     (1357924680122, 'Romance');
 
 INSERT INTO INCLUDES (order_num, book_isbn)
@@ -228,7 +231,8 @@ VALUES
 INSERT INTO CHARGES_TO (account_name, credit_card)
 VALUES
     ('booklvr', 1111111111111111),
-    ('booklvr2', 2222222222222222);
+    ('booklvr2', 2222222222222222),
+    ('ineedbooks', 1234567890123456);
 
 INSERT INTO SHIPS_TO (account_name, postal_code, street, street_num)
 VALUES

@@ -12,8 +12,6 @@ def login(cur, user, password):
     return
 
 def search(cur, field, val):
-    f = open("./SQL/functions.sql", "r").read().split("\n")
-    cur.execute(f[0:3], (field, val))
     return cur.fetchall()
 
 def create_tables(cur):
@@ -25,86 +23,86 @@ def create_tables(cur):
     book_query = "".join(f[11:24])
     execute_query(cur, book_query)
 
-    address_query = "".join(f[25:34])
+    address_query = "".join(f[26:35])
     execute_query(cur, address_query)
 
-    order_query = "".join(f[35:45])
+    order_query = "".join(f[36:46])
     execute_query(cur, order_query)
 
-    author_query = "".join(f[46:51])
+    author_query = "".join(f[47:52])
     execute_query(cur, author_query)
 
-    credit_card_query = "".join(f[52:57])
+    credit_card_query = "".join(f[53:58])
     execute_query(cur, credit_card_query)
 
-    account_query = "".join(f[58:62])
+    account_query = "".join(f[59:63])
     execute_query(cur, account_query)
 
-    genre_query = "".join(f[63:66])
+    genre_query = "".join(f[64:67])
     execute_query(cur, genre_query)
 
-    written_by_query = "".join(f[67:76])
+    written_by_query = "".join(f[68:77])
     execute_query(cur, written_by_query)
 
-    has_genre_query = "".join(f[77:86])
+    has_genre_query = "".join(f[78:87])
     execute_query(cur, has_genre_query)
 
-    includes_query = "".join(f[87:96])
+    includes_query = "".join(f[88:97])
     execute_query(cur, includes_query)
 
-    paid_with_query = "".join(f[97:106])
+    paid_with_query = "".join(f[98:107])
     execute_query(cur, paid_with_query)
 
-    charges_to_query = "".join(f[107:116])
+    charges_to_query = "".join(f[108:117])
     execute_query(cur, charges_to_query)
 
-    ships_to_query = "".join(f[117:128])
+    ships_to_query = "".join(f[118:129])
     execute_query(cur, ships_to_query)
 
 
 def add_dummy_data(cur):
     f = open("./SQL/init.sql", "r").read().split("\n")
 
-    publisher_data = "".join(f[129:134])
+    publisher_data = "".join(f[130:135])
     execute_query(cur, publisher_data)
 
-    book_data = "".join(f[135:143])
+    book_data = "".join(f[136:144])
     execute_query(cur, book_data)
 
-    address_data = "".join(f[144:149])
+    address_data = "".join(f[145:150])
     execute_query(cur, address_data)
 
-    orders_data = "".join(f[150:155])
+    orders_data = "".join(f[151:156])
     execute_query(cur, orders_data)
 
-    author_data = "".join(f[156:163])
+    author_data = "".join(f[157:164])
     execute_query(cur, author_data)
 
-    credit_card_data = "".join(f[164:169])
+    credit_card_data = "".join(f[165:170])
     execute_query(cur, credit_card_data)
 
-    account_data = "".join(f[170:175])
+    account_data = "".join(f[171:176])
     execute_query(cur, account_data)
 
-    genre_data = "".join(f[176:186])
+    genre_data = "".join(f[177:187])
     execute_query(cur, genre_data)
 
-    written_by_data = "".join(f[187:199])
+    written_by_data = "".join(f[188:200])
     execute_query(cur, written_by_data)
 
-    has_genre_data = "".join(f[200:213])
+    has_genre_data = "".join(f[201:214])
     execute_query(cur, has_genre_data)
 
-    includes_data = "".join(f[214:222])
+    includes_data = "".join(f[215:223])
     execute_query(cur, includes_data)
 
-    paid_with_data = "".join(f[223:228])
+    paid_with_data = "".join(f[224:229])
     execute_query(cur, paid_with_data)
 
-    charges_to_data = "".join(f[229:234])
+    charges_to_data = "".join(f[230:235])
     execute_query(cur, charges_to_data)
 
-    ships_to_data = "".join(f[235:238])
+    ships_to_data = "".join(f[236:239])
     execute_query(cur, ships_to_data)
 
 def connect_to_db():
