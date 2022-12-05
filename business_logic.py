@@ -11,6 +11,29 @@ def execute_query(cur, query):
 def login(cur, user, password):
     return
 
+def get_book(cur, isbn, user_type):
+    if user_type == 'c':
+        cur.execute("""SELECT (isbn, title, first_name, last_name, genre, page_count, price, name)
+                        FROM Book, Written_By, Author, Publisher, Has_Genre
+                        WHERE Book.isbn = Written_By.book_isbn AND
+                            Written_By.author_id = Author.author_id AND
+                            Book.publisher_id = Publisher.publisher_id AND
+                            Book.isbn = Has_Genre.book_isbn AND
+                            Book.isbn = %s
+                    """, (isbn,))
+
+    else:
+        cur.execute("""SELECT (isbn, title, first_name, last_name, genre, page_count, price, name, num_sold, num_sold_last_month, percent_for_publisher, wholesale_price, in_stock)
+                        FROM Book, Written_By, Author, Publisher, Has_Genre
+                        WHERE Book.isbn = Written_By.book_isbn AND
+                            Written_By.author_id = Author.author_id AND
+                            Book.publisher_id = Publisher.publisher_id AND
+                            Book.isbn = Has_Genre.book_isbn AND
+                            Book.isbn = %s
+                    """, (isbn,))
+
+    return cur.fetchone()
+
 def search(cur, field, val):
     try:
         if field == "title":
@@ -55,6 +78,14 @@ def search(cur, field, val):
                 WHERE Book.isbn = Written_by.book_isbn AND
                     Written_by.author_id = Author.author_id AND
                     Author.last_name = %s;
+                """, (" ".join(val),))
+
+        elif field == "publisher":
+            cur.execute("""
+                SELECT (isbn, title)
+                FROM Book, Publisher 
+                WHERE Book.publisher_id = Publisher.publisher_id AND
+                    publisher.name = %s;
                 """, (" ".join(val),))
 
         elif field == "available":
