@@ -121,9 +121,28 @@ def main():
             success = bl.create_new_account(cur, username, password)
             if not success:
                 print("Account registration unsuccessful")
-            else:
-                print("Account sucessfully created.\nWelcome to the LookInnaBook family!")
-                logged_in = True
+                continue
+
+            print("Account sucessfully created.\nWelcome to the LookInnaBook family!")
+            logged_in = True
+            add_card = input("Would you like to add a credit card to your account? (y/n) ")
+            while add_card != "y" and add_card != "n":
+                print("Oops! Please enter a y to add a credit card to your account or n to skip this step")
+                add_card = input("Would you like to add a credit card to your account? (y/n) ")
+
+            if add_card == 'y':
+                card_num = input("Credit card number: ")
+                expiry_date = input("Expiry Date (yyyy-mm-dd): ")
+                cvv = input("CVV (3 numbers on back): ")
+                bl.add_card(cur, card_num, expiry_date, cvv, username)
+
+            add_address = input("Would you like to add an address to your account? (y/n) ")
+            while add_address != "y" and add_address != "n":
+                print("Oops! Please enter a y to add an address to your account or n to skip this step")
+                add_address = input("Would you like to add an address to your account? (y/n) ")
+
+            if add_address == 'y':
+                continue
 
         elif command == "add_to_basket":
             if selected == None:

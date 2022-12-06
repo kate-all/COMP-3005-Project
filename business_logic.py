@@ -37,6 +37,19 @@ def create_new_account(cur, user, password):
 
     return True
 
+def add_card(cur, card_num, expiry_date, cvv, user):
+    # Add card to credit cards if new
+    cur.execute("""SELECT * FROM Credit_Card WHERE card_num=%s;""", (card_num,))
+    if cur.fetchall() == []:
+        cur.execute("""INSERT INTO Credit_Card (card_num, expiry_date, cvv) 
+        VALUES (%s, %s, TO_DATE(%s, 'YYYY-MM-DD'));
+        """, (card_num, expiry_date, cvv))
+
+    # Link card to account if not linked already
+    cur.execute("""SELECT * FROM Charges_To WHERE account_name=%s AND credit_card=%s""", (user, card_num))
+    cur.execute("""INSERT INTO Charges_To (account_name, credit_card) 
+    VALUES (%s, %s);""", (user, card_num))
+
 def get_book(cur, isbn, user_type):
     if user_type == 'c':
         cur.execute("""SELECT (isbn, title, first_name, last_name, genre, page_count, price, name)
