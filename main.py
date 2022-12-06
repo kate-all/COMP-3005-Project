@@ -142,7 +142,13 @@ def main():
                 add_address = input("Would you like to add an address to your account? (y/n) ")
 
             if add_address == 'y':
-                continue
+                street_num = input("Street num: ")
+                street = input("Street name: ")
+                city = input("City: ")
+                province = input("Province (In 2 letter format, ex ON) ")
+                country = input("Country ")
+                postal_code = input("Postal Code: ")
+                bl.add_address(cur, street_num, street, city, province, country, postal_code, username)
 
         elif command == "add_to_basket":
             if selected == None:

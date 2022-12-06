@@ -50,6 +50,21 @@ def add_card(cur, card_num, expiry_date, cvv, user):
     cur.execute("""INSERT INTO Charges_To (account_name, credit_card) 
     VALUES (%s, %s);""", (user, card_num))
 
+def add_address(cur, street_num, street, city, province, country, postal_code, user):
+    # Add address to addresses if new
+    cur.execute("""SELECT * FROM Address WHERE street_num=%s AND street=%s AND postal_code=%s""", (street_num, street, postal_code))
+    if cur.fetchall() == []:
+        cur.execute("""INSERT INTO Address (street_num, street, city, province, country, postal_code)
+        VALUES (%s, %s, %s, %s, %s, %s)""", (street_num, street, city, province, country, postal_code))
+
+    # Link address to account if not linked already
+    cur.execute("""SELECT * FROM Ships_To WHERE account_name=%s AND postal_code=%s AND street=%s AND street_num=%s""",
+                (user, postal_code, street, street_num))
+    if cur.fetchall() == []:
+        cur.execute("""INSERT INTO Ships_To 
+        VALUES (%s, %s, %s, %s)""", (user, postal_code, street, street_num))
+
+
 def get_book(cur, isbn, user_type):
     if user_type == 'c':
         cur.execute("""SELECT (isbn, title, first_name, last_name, genre, page_count, price, name)

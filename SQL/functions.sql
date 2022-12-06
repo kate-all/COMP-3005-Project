@@ -59,3 +59,25 @@ WHERE Book.isbn = Written_By.book_isbn AND
         Book.publisher_id = Publisher.publisher_id AND
         Book.isbn = Has_Genre.book_isbn AND
         Book.isbn = 1111111111111
+
+-- CREDIT CARD
+SELECT * FROM Credit_Card WHERE card_num=%s;
+
+INSERT INTO Credit_Card (card_num, expiry_date, cvv)
+VALUES (%s, %s, TO_DATE(%s, 'YYYY-MM-DD'));
+
+SELECT * FROM Charges_To WHERE account_name=%s AND credit_card=%s
+
+INSERT INTO Charges_To (account_name, credit_card)
+VALUES (%s, %s);
+
+-- ADDRESS
+SELECT * FROM Address WHERE street_num=%s AND street=%s AND postal_code=%s
+
+INSERT INTO Address (street_num, street, city, province, country, postal_code)
+VALUES (%s, %s, %s, %s, %s, %s)
+
+SELECT * FROM Ships_To WHERE account_name=%s AND postal_code=%s AND street=%s AND street_num=%s
+
+INSERT INTO Ships_To
+VALUES (%s, %s, %s, %s)
