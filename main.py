@@ -11,6 +11,7 @@ customer_menu = {"menu": "Show this command menu again",
                  "logout": "Log out of your account",
                  "register": "Register for an account",
                  "add_to_basket": "Add the selected book to your basket",
+                 "checkout": "Order the items in your basket",
                  "exit": "Exit this application."
                  }
 
@@ -158,6 +159,44 @@ def main():
                 basket.append(selected)
                 print("Added", selected, "to basket")
                 selected = None
+
+        elif command == "checkout":
+            if basket == []:
+                print("Your basket is empty")
+                continue
+            if not logged_in:
+                print("Please log in to checkout")
+                continue
+
+            linked_addresses = bl.get_addresses(cur, username)
+            address = None
+            if linked_addresses != []:
+                use_linked_address =input("Do you want to use an address linked to your account? (y/n) ")
+                while use_linked_address != "y" and use_linked_address != "n":
+                    use_linked_address =input("Please type y to use a linked address or n to use a new address ")
+
+                if use_linked_address == "y":
+                    for i in range(len(linked_addresses)):
+                        print(i,"-",linked_addresses[i])
+                    address_num = input("Enter a number between 0 and",(len(linked_addresses) - 1),"to select")
+                    while int(address_num) < 0 or int(address_num) >= len(linked_addresses):
+                        address_num = input("Please enter a number between 0 and",(len(linked_addresses) - 1),"to select an address")
+
+                    address = tuple(linked_addresses[address_num][0][1:-1].split(","))
+                    bl.add_address(cur, address[0], address[1], address[2], address[3], address[4], address[5], username)
+
+            else:
+                street_num = input("Street num: ")
+                street = input("Street name: ")
+                city = input("City: ")
+                province = input("Province (In 2 letter format, ex ON) ")
+                country = input("Country ")
+                postal_code = input("Postal Code: ")
+                address = tuple(street_num, street, city, province, country, postal_code)
+                bl.add_address(cur, street_num, street, city, province, country, postal_code, username)
+
+            order_num = bl.create_order(cur, address[5], address[1], address[0], basket)
+
 
         elif command == "exit":
             is_sure = input("Are you sure you want to exit? Your basket will be emptied. (y/n) ")

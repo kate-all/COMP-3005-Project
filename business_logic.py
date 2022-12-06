@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2 import OperationalError
-
+import random
 
 def execute_query(cur, query):
     try:
@@ -18,6 +18,10 @@ def login(cur, user, password):
         return False
 
     return True
+
+def get_addresses(cur, user):
+    cur.execute("""SELECT * FROM Ships_To WHERE username=%s""",(user,))
+    return cur.fetchall()
 
 def is_valid_username(cur, user):
     cur.execute("""SELECT * FROM Account
@@ -64,6 +68,16 @@ def add_address(cur, street_num, street, city, province, country, postal_code, u
         cur.execute("""INSERT INTO Ships_To 
         VALUES (%s, %s, %s, %s)""", (user, postal_code, street, street_num))
 
+def create_order(cur, postal_code, street, street_num, basket):
+    order_num = "".join([str(random.randint(0,9)) for i in range(0,5)])
+    cur.execute("""INSERT INTO Orders (order_num, postal_code, street, street_num)
+    VALUES (%s, %s, %s, %s, "Mississauga", NULL)""", (order_num, postal_code, street, street_num))
+
+    for book in basket:
+        cur.execute("""INSERT INTO Includes 
+        VALUES (%s, %s)""", (order_num, book))
+
+    return order_num
 
 def get_book(cur, isbn, user_type):
     if user_type == 'c':
