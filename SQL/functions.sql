@@ -97,3 +97,19 @@ INSERT INTO Paid_With
 VALUES (%s, %s)
 
 SELECT * FROM Orders WHERE Orders.order_num=%s
+
+-- PUBLISHER
+INSERT INTO Publisher
+VALUES (%s, %s, %s, %s, %s)
+
+-- ADDING BOOKS
+INSERT INTO Book (isbn, title, page_count, price, wholesale_price, in_stock, percent_for_publisher, publisher_id)
+VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+
+SELECT author_id FROM Author WHERE first_name=%s AND last_name=%s
+INSERT INTO Author VALUES (%s, %s, %s)
+INSERT INTO Written_By VALUES (%s, %s)
+
+SELECT name FROM Genre WHERE name=%s
+INSERT INTO Genre VALUES (%s)
+INSERT INTO Has_Genre VALUES (%s, %s)

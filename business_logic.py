@@ -117,6 +117,47 @@ def is_available(cur, isbn):
     cur.execute("""SELECT * FROM Book WHERE isbn=%s AND in_stock > 0""", (isbn,))
     return cur.fetchall() != []
 
+def get_publisher(cur, p_name):
+    cur.execute("""SELECT publisher_id FROM Publisher WHERE name=%s""", (p_name, ))
+    return cur.fetchall()
+
+def add_publisher(cur, p_name, p_email, p_phone_num, p_bank_acc):
+    id = "".join([str(random.randint(0,9)) for i in range(0,10)])
+    cur.execute("""INSERT INTO Publisher 
+    VALUES (%s, %s, %s, %s, %s)""", (id, p_name, p_email, p_phone_num, p_bank_acc))
+    return id
+
+def add_book(cur, isbn, title, page_count, price, price_wholesale, in_stock, percent_for_publisher, p_id, author_names, genres):
+    # Add Book
+    search(cur, "isbn", isbn)
+    if cur.fetchall() != []:
+        return False
+
+    cur.execute("""INSERT INTO Book (isbn, title, page_count, price, wholesale_price, in_stock, percent_for_publisher, publisher_id)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", (isbn, title, page_count, price, price_wholesale, in_stock, percent_for_publisher, p_id))
+
+    # Add Genres
+    for name in genres:
+        cur.execute("""SELECT name FROM Genre WHERE name=%s""", (name,))
+        if cur.fetchall() == []:
+            cur.execute("""INSERT INTO Genre VALUES (%s)""", (name,))
+        cur.execute("""INSERT INTO Has_Genre VALUES (%s, %s)""", (isbn, name))
+
+    # Add Authors
+    for author in author_names:
+        name = author.split(" ")
+        cur.execute("""SELECT author_id FROM Author WHERE first_name=%s AND last_name=%s""", (name[0], name[1]))
+        id = cur.fetchall()
+        if id == []:
+            id = "".join([str(random.randint(0,9)) for i in range(0,10)])
+            cur.execute("""INSERT INTO Author VALUES (%s, %s, %s)""", (id, name[0], name[1]))
+        else:
+            id = id[0]
+
+        cur.execute("""INSERT INTO Written_By VALUES (%s, %s)""", (isbn, id))
+
+    return True
+
 def search(cur, field, val):
     try:
         if field == "title":

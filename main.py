@@ -22,6 +22,7 @@ employee_menu = {"menu": "Show this command menu again",
                  "search available": "See all available books",
                  "select <isbn>": "Select a book by its isbn to see more information",
                  "unselect": "Unselect current selected book",
+                 "add_book": "Add a book to the catalog",
                  "exit": "Exit this application."}
 
 def print_menu(user_type):
@@ -238,6 +239,33 @@ def main():
 
         elif command == "track":
             print(bl.get_order(cur, full_command[1]))
+
+        elif command == "add_book":
+            publisher_name = input("Publisher name: ")
+            p_id = bl.get_publisher(cur, publisher_name)
+            if p_id == []:
+                p_email = input("Publisher email: ")
+                p_phone_num = input("Publisher phone number (10 digit number): ")
+                p_bank_acc = input("Publisher bank account number (17 digit number): ")
+                p_id = bl.add_publisher(cur, publisher_name, p_email, p_phone_num, p_bank_acc)
+
+            else:
+                p_id = str(p_id[0])[10:-4]
+
+            isbn = input("ISBN: ")
+            title = input("Title: ")
+            page_count = input("Page count:")
+            price = input("Price (don't add $): ")
+            price_wholesale = input("Wholesale price (don't add $): ")
+            in_stock = input("Amount in stock: ")
+            percent_for_publisher = input("% for publisher (don't add %): ")
+            author_names = input("Author name(s) (ex. John Smith,William Shakespeare): ").split(",")
+            genres = input("Genre(s) (separate with ,): ").split(",")
+            success = bl.add_book(cur, isbn, title, page_count, price, price_wholesale, in_stock, percent_for_publisher, p_id, author_names, genres)
+            if not success:
+                print(isbn, "is already in our system!")
+            else:
+                print(isbn, "added")
 
         else:
             print("Command not found. Please try again")
