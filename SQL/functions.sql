@@ -113,3 +113,19 @@ INSERT INTO Written_By VALUES (%s, %s)
 SELECT name FROM Genre WHERE name=%s
 INSERT INTO Genre VALUES (%s)
 INSERT INTO Has_Genre VALUES (%s, %s)
+
+-- DELETING BOOKS
+SELECT publisher_id FROM Book WHERE isbn=%s
+
+SELECT author_id FROM Written_By WHERE book_isbn=%s
+SELECT * FROM Written_By WHERE author_id=%s
+DELETE FROM Written_By WHERE author_id=%s
+
+DELETE FROM Author WHERE author_id=%s
+
+DELETE FROM Has_Genre WHERE book_isbn=%s
+
+DELETE FROM Book WHERE isbn=%s
+
+SELECT isbn FROM Book WHERE publisher_id=%s
+DELETE FROM Publisher WHERE publisher_id=%s
