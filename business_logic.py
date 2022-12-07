@@ -27,6 +27,10 @@ def get_cards(cur, user):
     cur.execute("""SELECT credit_card FROM Charges_To WHERE account_name=%s""", (user,))
     return cur.fetchall()
 
+def get_order(cur, order_num):
+    cur.execute("""SELECT * FROM Orders WHERE Orders.order_num=%s""", (order_num,))
+    return cur.fetchone()
+
 def is_valid_username(cur, user):
     cur.execute("""SELECT * FROM Account
     WHERE username = %s;

@@ -12,6 +12,7 @@ customer_menu = {"menu": "Show this command menu again",
                  "register": "Register for an account",
                  "add_to_basket": "Add the selected book to your basket",
                  "checkout": "Order the items in your basket",
+                 "track <order_num>": "Get order and tracking info for a given order",
                  "exit": "Exit this application."
                  }
 
@@ -231,6 +232,12 @@ def main():
             if is_sure == 'y':
                 print("Thank you for shopping with us today!")
                 break
+
+        elif command == "track":
+            print(bl.get_order(cur, full_command[1]))
+
+        else:
+            print("Command not found. Please try again")
 
 
 main()

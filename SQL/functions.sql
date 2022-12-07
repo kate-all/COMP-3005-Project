@@ -81,3 +81,17 @@ SELECT * FROM Ships_To WHERE account_name=%s AND postal_code=%s AND street=%s AN
 
 INSERT INTO Ships_To
 VALUES (%s, %s, %s, %s)
+
+SELECT * FROM Ships_To WHERE username=%s
+
+-- ORDER
+INSERT INTO Orders (order_num, postal_code, street, street_num, current_city, eta)
+VALUES (%s, %s, %s, %s, 'Mississauga', NULL)
+
+INSERT INTO Includes
+VALUES (%s, %s)
+
+INSERT INTO Paid_With
+VALUES (%s, %s)
+
+SELECT * FROM Orders WHERE Orders.order_num=%s
