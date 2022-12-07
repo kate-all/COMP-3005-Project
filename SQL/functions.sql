@@ -129,3 +129,18 @@ DELETE FROM Book WHERE isbn=%s
 
 SELECT isbn FROM Book WHERE publisher_id=%s
 DELETE FROM Publisher WHERE publisher_id=%s
+
+-- REPORT
+SELECT sum(num_sold_last_month) FROM Book
+
+SELECT genre, sum(num_sold_last_month) AS sold FROM Book, Has_Genre
+WHERE Book.isbn = Has_Genre.book_isbn
+GROUP BY genre
+ORDER BY sold DESC
+LIMIT 1
+
+SELECT genre, sum(num_sold) AS sold FROM Book, Has_Genre
+WHERE Book.isbn = Has_Genre.book_isbn
+GROUP BY genre
+ORDER BY sold DESC
+    LIMIT 1

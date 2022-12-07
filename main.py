@@ -24,6 +24,7 @@ employee_menu = {"menu": "Show this command menu again",
                  "unselect": "Unselect current selected book",
                  "add_book": "Add a book to the catalog",
                  "delete_book": "Delete a book from the catalog",
+                 "view_report": "View report",
                  "exit": "Exit this application."}
 
 def print_menu(user_type):
@@ -274,6 +275,9 @@ def main():
             if not success:
                 print(isbn,"is not in the system")
             print(isbn, "removed")
+
+        elif command=="view_report":
+            bl.report(cur)
 
         else:
             print("Command not found. Please try again")
