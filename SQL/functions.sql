@@ -33,6 +33,8 @@ WHERE Book.publisher_id = Publisher.publisher_id AND
 
 SELECT (isbn, title) FROM Book WHERE in_stock > 0;
 
+SELECT * FROM Book WHERE isbn=%s AND in_stock > 0
+
 -- VALIDATION --
 SELECT * FROM Account
 WHERE username = 'ausername';

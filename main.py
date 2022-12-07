@@ -157,9 +157,12 @@ def main():
                 print("No book selected")
 
             else:
-                basket.append(selected)
-                print("Added", selected, "to basket")
-                selected = None
+                if not bl.is_available(cur, selected):
+                    print("Sorry! This book is out of stock")
+                else:
+                    basket.append(selected)
+                    print("Added", selected, "to basket")
+                    selected = None
 
         elif command == "checkout":
             if basket == []:

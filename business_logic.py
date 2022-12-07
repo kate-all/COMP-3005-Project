@@ -113,6 +113,10 @@ def get_book(cur, isbn, user_type):
 
     return cur.fetchone()
 
+def is_available(cur, isbn):
+    cur.execute("""SELECT * FROM Book WHERE isbn=%s AND in_stock > 0""", (isbn,))
+    return cur.fetchall() != []
+
 def search(cur, field, val):
     try:
         if field == "title":
