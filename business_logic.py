@@ -20,7 +20,11 @@ def login(cur, user, password):
     return True
 
 def get_addresses(cur, user):
-    cur.execute("""SELECT * FROM Ships_To WHERE username=%s""",(user,))
+    cur.execute("""SELECT (street_num, street, postal_code) FROM Ships_To WHERE account_name=%s""",(user,))
+    return cur.fetchall()
+
+def get_cards(cur, user):
+    cur.execute("""SELECT credit_card FROM Charges_To WHERE account_name=%s""", (user,))
     return cur.fetchall()
 
 def is_valid_username(cur, user):
@@ -46,7 +50,7 @@ def add_card(cur, card_num, expiry_date, cvv, user):
     cur.execute("""SELECT * FROM Credit_Card WHERE card_num=%s;""", (card_num,))
     if cur.fetchall() == []:
         cur.execute("""INSERT INTO Credit_Card (card_num, expiry_date, cvv) 
-        VALUES (%s, %s, TO_DATE(%s, 'YYYY-MM-DD'));
+        VALUES (%s, TO_DATE(%s, 'YYYY-MM-DD'), %s);
         """, (card_num, expiry_date, cvv))
 
     # Link card to account if not linked already
@@ -68,14 +72,17 @@ def add_address(cur, street_num, street, city, province, country, postal_code, u
         cur.execute("""INSERT INTO Ships_To 
         VALUES (%s, %s, %s, %s)""", (user, postal_code, street, street_num))
 
-def create_order(cur, postal_code, street, street_num, basket):
+def create_order(cur, postal_code, street, street_num, basket, card):
     order_num = "".join([str(random.randint(0,9)) for i in range(0,5)])
-    cur.execute("""INSERT INTO Orders (order_num, postal_code, street, street_num)
-    VALUES (%s, %s, %s, %s, "Mississauga", NULL)""", (order_num, postal_code, street, street_num))
+    cur.execute("""INSERT INTO Orders (order_num, postal_code, street, street_num, current_city, eta)
+    VALUES (%s, %s, %s, %s, 'Mississauga', NULL)""", (order_num, postal_code, street, street_num))
 
     for book in basket:
         cur.execute("""INSERT INTO Includes 
         VALUES (%s, %s)""", (order_num, book))
+
+    cur.execute("""INSERT INTO Paid_With 
+    VALUES (%s, %s)""",(card, order_num))
 
     return order_num
 

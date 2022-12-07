@@ -3,7 +3,7 @@ import business_logic as bl
 
 customer_menu = {"menu": "Show this command menu again",
                  "search <field> <value>": "Search for a book by field. Ex. search genre romance",
-                 "search <field> <operator> <value>": "Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\tDo not include $ in the price",
+                 "search <field> <operator> <value>": "Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
                  "search available": "See all available books",
                  "select <isbn>": "Select a book by its isbn to see more information",
                  "unselect": "Unselect current selected book",
@@ -17,7 +17,7 @@ customer_menu = {"menu": "Show this command menu again",
 
 employee_menu = {"menu": "Show this command menu again",
                  "search <field> <value>": "Search for a book by field. Ex. search genre romance",
-                 "search <field> <operator> <value>": "Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\tDo not include $ in the price",
+                 "search <field> <operator> <value>": "Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
                  "search available": "See all available books",
                  "select <isbn>": "Select a book by its isbn to see more information",
                  "unselect": "Unselect current selected book",
@@ -34,7 +34,7 @@ def print_menu(user_type):
         for k,v in employee_menu.items():
             print(k, " - " + v)
 
-    print("\n")
+    print()
 
 def main():
     cur = None
@@ -169,34 +169,58 @@ def main():
                 continue
 
             linked_addresses = bl.get_addresses(cur, username)
-            address = None
+            address_for_order = None
             if linked_addresses != []:
                 use_linked_address =input("Do you want to use an address linked to your account? (y/n) ")
                 while use_linked_address != "y" and use_linked_address != "n":
-                    use_linked_address =input("Please type y to use a linked address or n to use a new address ")
+                    use_linked_address =input("Please type y to use a linked address or n to use a new address_for_order ")
 
                 if use_linked_address == "y":
                     for i in range(len(linked_addresses)):
                         print(i,"-",linked_addresses[i])
-                    address_num = input("Enter a number between 0 and",(len(linked_addresses) - 1),"to select")
-                    while int(address_num) < 0 or int(address_num) >= len(linked_addresses):
-                        address_num = input("Please enter a number between 0 and",(len(linked_addresses) - 1),"to select an address")
+                    address_num = int(input(f"Enter a number between 0 and {len(linked_addresses) - 1} to select "))
+                    while address_num < 0 or address_num >= len(linked_addresses):
+                        address_num = int(input(f"Please enter a number between 0 and {len(linked_addresses) - 1} to select an address "))
 
-                    address = tuple(linked_addresses[address_num][0][1:-1].split(","))
-                    bl.add_address(cur, address[0], address[1], address[2], address[3], address[4], address[5], username)
+                    address_for_order = tuple(linked_addresses[address_num][0][1:-1].split(","))
+                    #address_for_order[]
 
-            else:
+            if linked_addresses == [] or use_linked_address == "n":
                 street_num = input("Street num: ")
                 street = input("Street name: ")
                 city = input("City: ")
                 province = input("Province (In 2 letter format, ex ON) ")
                 country = input("Country ")
                 postal_code = input("Postal Code: ")
-                address = tuple(street_num, street, city, province, country, postal_code)
+                address_for_order = (street_num, street, postal_code)
                 bl.add_address(cur, street_num, street, city, province, country, postal_code, username)
 
-            order_num = bl.create_order(cur, address[5], address[1], address[0], basket)
+            linked_cards = bl.get_cards(cur, username)
+            use_linked_card = None
+            card = None
+            if linked_cards != []:
+                use_linked_card =input("Do you want to use a credit card linked to your account? (y/n) ")
+                while use_linked_card != "y" and use_linked_card != "n":
+                    use_linked_card =input("Please type y to use a linked credit card or n to use a new card ")
 
+                if use_linked_card == "y":
+                    for i in range(len(linked_cards)):
+                        print(i,"-",linked_cards[i])
+                    card_num = int(input(f"Enter a number between 0 and {(len(linked_cards) - 1)} to select "))
+                    while card_num < 0 or card_num >= len(linked_cards):
+                        card_num = int(input(f"Please enter a number between 0 and {(len(linked_cards) - 1)} to select a credit card "))
+
+                    card = str(linked_cards[card_num])[10:-4]
+
+            if linked_cards == [] or use_linked_card == "n":
+                card_num = input("Credit card number: ")
+                expiry_date = input("Expiry Date (yyyy-mm-dd): ")
+                cvv = input("CVV (3 numbers on back): ")
+                card = card_num
+                bl.add_card(cur, card_num, expiry_date, cvv, username)
+
+            order_num = bl.create_order(cur, address_for_order[2], address_for_order[1], address_for_order[0], basket, card)
+            print("Order", order_num, "created")
 
         elif command == "exit":
             is_sure = input("Are you sure you want to exit? Your basket will be emptied. (y/n) ")
