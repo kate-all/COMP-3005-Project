@@ -158,6 +158,36 @@ def add_book(cur, isbn, title, page_count, price, price_wholesale, in_stock, per
 
     return True
 
+def delete_book(cur, isbn):
+    cur.execute("""SELECT publisher_id FROM Book WHERE isbn=%s""",(isbn,))
+    p_id = cur.fetchall()
+
+    if p_id == []:
+        return False
+
+    # Remove Author if needed
+    cur.execute("""SELECT author_id FROM Written_By WHERE book_isbn=%s""",(isbn,))
+    author_ids = cur.fetchall()
+    for author in author_ids:
+        cur.execute("""SELECT * FROM Written_By WHERE author_id=%s""",(author,))
+        if len(cur.fetchall()):
+            cur.execute("""DELETE FROM Written_By WHERE author_id=%s""",(author,))
+            cur.execute("""DELETE FROM Author WHERE author_id=%s""",(author,))
+
+    # Remove from Has_Genre
+    cur.execute("""DELETE FROM Has_Genre WHERE book_isbn=%s""",(isbn,))
+
+    # Remove Book
+    cur.execute("""DELETE FROM Book WHERE isbn=%s""", (isbn,))
+
+    # Remove publisher if no longer participating in relation
+    p_id = p_id[0]
+    cur.execute("""SELECT isbn FROM Book WHERE publisher_id=%s""",(p_id,))
+    if len(cur.fetchall()) == 0: # This publisher hasn't published any other books
+        cur.execute("""DELETE FROM Publisher WHERE publisher_id=%s""",(p_id,))
+
+    return True
+
 def search(cur, field, val):
     try:
         if field == "title":

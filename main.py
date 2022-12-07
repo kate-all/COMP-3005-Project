@@ -23,6 +23,7 @@ employee_menu = {"menu": "Show this command menu again",
                  "select <isbn>": "Select a book by its isbn to see more information",
                  "unselect": "Unselect current selected book",
                  "add_book": "Add a book to the catalog",
+                 "delete_book": "Delete a book from the catalog",
                  "exit": "Exit this application."}
 
 def print_menu(user_type):
@@ -254,7 +255,7 @@ def main():
 
             isbn = input("ISBN: ")
             title = input("Title: ")
-            page_count = input("Page count:")
+            page_count = input("Page count: ")
             price = input("Price (don't add $): ")
             price_wholesale = input("Wholesale price (don't add $): ")
             in_stock = input("Amount in stock: ")
@@ -266,6 +267,13 @@ def main():
                 print(isbn, "is already in our system!")
             else:
                 print(isbn, "added")
+
+        elif command=="delete_book":
+            isbn = input("ISBN: ")
+            success = bl.delete_book(cur,isbn)
+            if not success:
+                print(isbn,"is not in the system")
+            print(isbn, "removed")
 
         else:
             print("Command not found. Please try again")
