@@ -66,7 +66,6 @@ def add_address(cur, street_num, street, city, province, country, postal_code, u
     # Add address to addresses if new
     cur.execute("""SELECT * FROM Address WHERE street_num=%s AND street=%s AND postal_code=%s""", (street_num, street, postal_code))
     if cur.fetchall() == []:
-        print("DEBUG", "Entered into if statement")
         cur.execute("""INSERT INTO Address (street_num, street, city, province, country, postal_code)
         VALUES (%s, %s, %s, %s, %s, %s)""", (street_num, street, city, province, country, postal_code))
 
@@ -272,7 +271,7 @@ WHERE Book.isbn = Has_Genre.book_isbn
 GROUP BY genre
 ORDER BY sold DESC
 LIMIT 1""")
-    report.append(cur.fetchall()[0][0])
+    output.append(cur.fetchall()[0][0])
     return output
 
 def reorder_list(cur):
