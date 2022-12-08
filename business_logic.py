@@ -368,6 +368,15 @@ def add_dummy_data(cur):
     ships_to_data = "".join(f[236:239])
     execute_query(cur, ships_to_data)
 
+def create_triggers(cur):
+    f = open("./SQL/triggers.sql", "r").read().split("\n")
+
+    reduce_inventory_func = "".join(f[1:16])
+    execute_query(cur, reduce_inventory_func)
+
+    reduce_inventory_trigger = "".join(f[17:22])
+    execute_query(cur, reduce_inventory_trigger)
+
 def connect_to_db():
     con = psycopg2.connect(
         database="LookInnaBook",
@@ -400,5 +409,6 @@ def create_database():
 
     create_tables(cur)
     add_dummy_data(cur)
+    create_triggers(cur)
 
     return cur
