@@ -378,6 +378,15 @@ def create_triggers(cur):
     reduce_inventory_trigger = "".join(f[29:34])
     execute_query(cur, reduce_inventory_trigger)
 
+    reorder_table = "".join(f[40:46])
+    execute_query(cur, reorder_table)
+
+    reorder_func = "".join(f[47:66])
+    execute_query(cur, reorder_func)
+
+    reorder_trigger = "".join(f[67:72])
+    execute_query(cur, reorder_trigger)
+
 def connect_to_db():
     con = psycopg2.connect(
         database="LookInnaBook",
