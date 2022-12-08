@@ -1,42 +1,42 @@
 import business_logic as bl
 
 
-customer_menu = {"menu": "Show this command menu again",
-                 "search <field> <value>": "Search for a book by field. Ex. search genre romance",
-                 "search <field> <operator> <value>": "Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
-                 "search available": "See all available books",
-                 "select <isbn>": "Select a book by its isbn to see more information",
-                 "unselect": "Unselect current selected book",
-                 "login": "Login to your account",
-                 "logout": "Log out of your account",
-                 "register": "Register for an account",
-                 "add_to_basket": "Add the selected book to your basket",
-                 "checkout": "Order the items in your basket",
-                 "track <order_num>": "Get order and tracking info for a given order",
-                 "exit": "Exit this application."
+customer_menu = {"menu": "- Show this command menu again",
+                 "search": "<field> <value> - Search for a book by field. Ex. search genre romance",
+                 "search": "<field> <operator> <value> - Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
+                 "search": "available - See all available books",
+                 "select": "<isbn> - Select a book by its isbn to see more information",
+                 "unselect": "- Unselect current selected book",
+                 "login": "- Login to your account",
+                 "logout": "- Log out of your account",
+                 "register": "- Register for an account",
+                 "add_to_basket": "- Add the selected book to your basket",
+                 "checkout": "- Order the items in your basket",
+                 "track": "<order_num> - Get order and tracking info for a given order",
+                 "exit": "- Exit this application."
                  }
 
-employee_menu = {"menu": "Show this command menu again",
-                 "search <field> <value>": "Search for a book by field. Ex. search genre romance",
-                 "search <field> <operator> <value>": "Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
-                 "search available": "See all available books",
-                 "select <isbn>": "Select a book by its isbn to see more information",
-                 "unselect": "Unselect current selected book",
-                 "add_book": "Add a book to the catalog",
-                 "delete_book": "Delete a book from the catalog",
-                 "view_report": "View report",
-                 "exit": "Exit this application."}
+employee_menu = {"menu": "- Show this command menu again",
+                 "search": "<field> <value> - Search for a book by field. Ex. search genre romance",
+                 "search": "<field> <operator> <value> - Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
+                 "search": "available - See all available books",
+                 "select": "<isbn> - Select a book by its isbn to see more information",
+                 "unselect": "- Unselect current selected book",
+                 "add_book": "- Add a book to the catalog",
+                 "delete_book": "- Delete a book from the catalog",
+                 "view_report": "- View report",
+                 "exit": "- Exit this application."}
 
 def print_menu(user_type):
     print("\nWe have a library of commands you can use! (Get it?)\n")
 
     if user_type == 'c':
         for k,v in customer_menu.items():
-            print(k ," - " + v)
+            print(k, v)
 
     else:
         for k,v in employee_menu.items():
-            print(k, " - " + v)
+            print(k, v)
 
     print()
 
@@ -72,7 +72,13 @@ def main():
         full_command = input("> ").split(" ")
         command = full_command[0]
 
-        if command == "menu":
+        if user_type == "c" and command in employee_menu and command not in customer_menu:
+            print("This command is for employees only")
+
+        elif user_type == "e" and command in customer_menu and command not in employee_menu:
+            print("This command is for customers only")
+
+        elif command == "menu":
             print_menu(user_type)
 
         elif command == "search":
@@ -230,13 +236,18 @@ def main():
             print("Order", order_num, "created")
 
         elif command == "exit":
-            is_sure = input("Are you sure you want to exit? Your basket will be emptied. (y/n) ")
+            is_sure = None
+            if user_type == "c":
+                is_sure = input("Are you sure you want to exit? Your basket will be emptied. (y/n) ")
+
+            else:
+                is_sure = input("Are you sure you want to exit? (y/n) ")
 
             while is_sure != "y" and is_sure != "n":
-                is_sure = input("Oops! Please type y to exit and n to continue in this app.")
+                is_sure = input("Oops! Please type y to exit and n to continue in this app. ")
 
             if is_sure == 'y':
-                print("Thank you for shopping with us today!")
+                print("Thank you for visiting our bookstore!")
                 break
 
         elif command == "track":
