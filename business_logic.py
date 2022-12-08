@@ -255,28 +255,29 @@ def search(cur, field, val):
     return cur.fetchall()
 
 def report(cur):
-    print("REPORT")
-    print("-" * 50)
-
-    print("Number of books sold last month:",end=" ")
+    output = []
     cur.execute("""SELECT sum(num_sold_last_month) FROM Book""")
-    print(cur.fetchall()[0][0])
 
-    print("Most popular genre last month:",end=" ")
+    output.append(cur.fetchall()[0][0])
+
     cur.execute("""SELECT genre, sum(num_sold_last_month) AS sold FROM Book, Has_Genre
 WHERE Book.isbn = Has_Genre.book_isbn
 GROUP BY genre
 ORDER BY sold DESC
 LIMIT 1""")
-    print(cur.fetchall()[0][0])
+    output.append(cur.fetchall()[0][0])
 
-    print("Most popular genre of all time:",end=" ")
     cur.execute("""SELECT genre, sum(num_sold) AS sold FROM Book, Has_Genre
 WHERE Book.isbn = Has_Genre.book_isbn
 GROUP BY genre
 ORDER BY sold DESC
 LIMIT 1""")
-    print(cur.fetchall()[0][0])
+    report.append(cur.fetchall()[0][0])
+    return output
+
+def reorder_list(cur):
+    cur.execute("""SELECT * FROM Reorder""")
+    return cur.fetchall()
 
 def create_tables(cur):
     f = open("./SQL/init.sql", "r").read().split("\n")

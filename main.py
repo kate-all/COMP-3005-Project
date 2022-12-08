@@ -25,6 +25,7 @@ employee_menu = {"menu": "- Show this command menu again",
                  "add_book": "- Add a book to the catalog",
                  "delete_book": "- Delete a book from the catalog",
                  "view_report": "- View report",
+                 "view_reorder_list": "- See list of books waiting for reorder, along with the reorder quantity and publisher email",
                  "exit": "- Exit this application."}
 
 def print_menu(user_type):
@@ -49,7 +50,6 @@ def main():
     print("Hello! Welcome to LookInnaBook!\n" +
       "There's plenty to explore in our store.\n")
 
-    first_time = ""
     first_time = input("Is this your first time using our CLI app? (y/n) ")
     while first_time != "y" and first_time != "n":
         print("Oops! You have to tell us if it's your first time using the app. I promise it's relevant!")
@@ -288,7 +288,32 @@ def main():
             print(isbn, "removed")
 
         elif command=="view_report":
-            bl.report(cur)
+
+            report = bl.report(cur)
+            print("REPORT")
+            print("-" * 50)
+
+            print("Number of books sold last month:",end=" ")
+            print(report[0])
+
+            print("Most popular genre last month:",end=" ")
+            cur.execute("""SELECT genre, sum(num_sold_last_month) AS sold FROM Book, Has_Genre
+        WHERE Book.isbn = Has_Genre.book_isbn
+        GROUP BY genre
+        ORDER BY sold DESC
+        LIMIT 1""")
+            print(report[1])
+
+            print("Most popular genre of all time:",end=" ")
+            cur.execute("""SELECT genre, sum(num_sold) AS sold FROM Book, Has_Genre
+        WHERE Book.isbn = Has_Genre.book_isbn
+        GROUP BY genre
+        ORDER BY sold DESC
+        LIMIT 1""")
+            print(report[2])
+
+        elif command=="view_reorder_list":
+            print(bl.reorder_list(cur));
 
         else:
             print("Command not found. Please try again")
