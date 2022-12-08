@@ -66,6 +66,7 @@ def add_address(cur, street_num, street, city, province, country, postal_code, u
     # Add address to addresses if new
     cur.execute("""SELECT * FROM Address WHERE street_num=%s AND street=%s AND postal_code=%s""", (street_num, street, postal_code))
     if cur.fetchall() == []:
+        print("DEBUG", "Entered into if statement")
         cur.execute("""INSERT INTO Address (street_num, street, city, province, country, postal_code)
         VALUES (%s, %s, %s, %s, %s, %s)""", (street_num, street, city, province, country, postal_code))
 
@@ -371,10 +372,10 @@ def add_dummy_data(cur):
 def create_triggers(cur):
     f = open("./SQL/triggers.sql", "r").read().split("\n")
 
-    reduce_inventory_func = "".join(f[1:16])
+    reduce_inventory_func = "".join(f[1:28])
     execute_query(cur, reduce_inventory_func)
 
-    reduce_inventory_trigger = "".join(f[17:22])
+    reduce_inventory_trigger = "".join(f[29:34])
     execute_query(cur, reduce_inventory_trigger)
 
 def connect_to_db():
@@ -398,6 +399,18 @@ def create_database():
 
     con.autocommit = True
     cur = con.cursor()
+
+    disconnect_query = """
+    SELECT 
+    pg_terminate_backend(pid) 
+    FROM 
+    pg_stat_activity 
+    WHERE 
+    pid <> pg_backend_pid()
+    AND datname = 'LookInnaBook'
+    ;
+    """
+    execute_query(cur, disconnect_query)
 
     drop_query = "DROP DATABASE IF EXISTS \"LookInnaBook\";"
     execute_query(cur, drop_query)
