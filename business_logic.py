@@ -91,27 +91,39 @@ def create_order(cur, postal_code, street, street_num, basket, card):
     return order_num
 
 def get_book(cur, isbn, user_type):
+    output = []
     if user_type == 'c':
-        cur.execute("""SELECT (isbn, title, first_name, last_name, genre, page_count, price, name)
-                        FROM Book, Written_By, Author, Publisher, Has_Genre
-                        WHERE Book.isbn = Written_By.book_isbn AND
-                            Written_By.author_id = Author.author_id AND
+        cur.execute("""SELECT (isbn, title, page_count, price, name)
+                        FROM Book, Publisher
+                        WHERE 
                             Book.publisher_id = Publisher.publisher_id AND
-                            Book.isbn = Has_Genre.book_isbn AND
                             Book.isbn = %s
                     """, (isbn,))
+        output = cur.fetchall()
 
     else:
-        cur.execute("""SELECT (isbn, title, first_name, last_name, genre, page_count, price, name, num_sold, num_sold_last_month, percent_for_publisher, wholesale_price, in_stock)
-                        FROM Book, Written_By, Author, Publisher, Has_Genre
-                        WHERE Book.isbn = Written_By.book_isbn AND
-                            Written_By.author_id = Author.author_id AND
+        cur.execute("""SELECT (isbn, title,  page_count, price, name, num_sold, num_sold_last_month, percent_for_publisher, wholesale_price, in_stock)
+                        FROM Book, Publisher
+                        WHERE 
                             Book.publisher_id = Publisher.publisher_id AND
-                            Book.isbn = Has_Genre.book_isbn AND
                             Book.isbn = %s
                     """, (isbn,))
+        output = cur.fetchall()
 
-    return cur.fetchone()
+    cur.execute("""SELECT first_name, last_name
+    FROM Book, Written_By, Author
+    WHERE Book.isbn = Written_By.book_isbn AND
+    Author.author_id = Written_By.author_id AND
+    Book.isbn = %s""", (isbn,))
+    output.append(cur.fetchall())
+
+    cur.execute("""SELECT genre 
+    FROM Book, Has_Genre 
+    WHERE Book.isbn = Has_Genre.book_isbn AND
+    Book.isbn = %s""", (isbn,))
+    output.append(cur.fetchall())
+
+    return output
 
 def is_available(cur, isbn):
     cur.execute("""SELECT * FROM Book WHERE isbn=%s AND in_stock > 0""", (isbn,))
@@ -195,7 +207,7 @@ def search(cur, field, val):
             cur.execute("SELECT (isbn, title) FROM Book WHERE title=%s;", (val,))
 
         elif field == "isbn":
-            cur.execute("SELECT (isbn, title) FROM Book WHERE isbn=%s;", (val,))
+            cur.execute("SELECT (isbn, title) FROM Book WHERE isbn=%s;", (val[0],))
 
         elif field == "price":
             if val[0] == "<":

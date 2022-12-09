@@ -41,6 +41,13 @@ def print_menu(user_type):
 
     print()
 
+def print_books(books):
+    print("{0:<30}".format("ISBN"), "{0:<30}".format("Title"))
+    for book in books:
+        isbn = book[0][1:14]
+        title = book[0][15:-1].strip('"')
+        print("{0:<30}".format(isbn), "{0:<30}".format(title))
+
 def main():
     cur = None
     selected = None
@@ -89,12 +96,37 @@ def main():
             elif output == []:
                 print("There are no books that match your search query.")
             else:
-                print(output)
+                print_books(output)
 
         elif command == "select":
             selected = int(full_command[1])
             output = bl.get_book(cur, selected, user_type)
-            print(output)
+
+            book_info = output[0][0][1:-1]
+            authors = ""
+            for author in output[1]:
+                if author[0] == None:
+                    authors += author[1] + ","
+                else:
+                    authors += author[0] + " " + author[1] + ","
+
+            genres = ""
+            for genre in output[2]:
+                genres += genre[0] + ","
+
+            print("ISBN:", book_info[0])
+            print("Title:", book_info[1].strip('"'))
+            print("Author(s):",authors[:-1])
+            print("Page_Count:", book_info[2])
+            print(f"Price: ${book_info[3]}")
+            print("Genre(s):",genres[:-1])
+            print("Publisher:",book_info[4].strip('"'))
+            if user_type == 'e':
+                print("Num Sold:",book_info[5])
+                print("Num Sold Last Month:",book_info[6])
+                print("% for Publisher:",book_info[7])
+                print("Wholesale Price",book_info[8])
+                print("In Stock:",book_info[9])
 
         elif command == "unselect":
             if selected == None:
