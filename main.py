@@ -49,9 +49,9 @@ def print_books(books):
         print("{0:<30}".format(isbn), "{0:<30}".format(title))
 
 def print_cards(cards):
-    print("{0:<20}".format("Selection $"), "{0:<30}".format("Card Number"))
-    for card in cards:
-        card
+    print("{0:<20}".format("Selection #"), "{0:<30}".format("Card Number"))
+    for i in range(len(cards)):
+        print("{0:<20}".format(i), "{0:<30}".format(str(cards[i][0])))
 
 def main():
     cur = None
@@ -229,9 +229,9 @@ def main():
                 if use_linked_address == "y":
                     for i in range(len(linked_addresses)):
                         print(i,"-",linked_addresses[i])
-                    address_num = int(input(f"Enter a number between 0 and {len(linked_addresses) - 1} to select "))
+                    address_num = int(input(f"Enter a number in the selection menu to select "))
                     while address_num < 0 or address_num >= len(linked_addresses):
-                        address_num = int(input(f"Please enter a number between 0 and {len(linked_addresses) - 1} to select an address "))
+                        address_num = int(input(f"Please enter a number in the selection menu to select an address "))
 
                     address_for_order = linked_addresses[address_num][0][1:-1].split(",")
                     address_for_order[1] = address_for_order[1][1:-1]
@@ -258,9 +258,10 @@ def main():
                 if use_linked_card == "y":
                     for i in range(len(linked_cards)):
                         print(i,"-",linked_cards[i])
-                    card_num = int(input(f"Enter a number between 0 and {(len(linked_cards) - 1)} to select "))
+                    print_cards(linked_cards)
+                    card_num = int(input(f"Enter a number in the selection menu to select "))
                     while card_num < 0 or card_num >= len(linked_cards):
-                        card_num = int(input(f"Please enter a number between 0 and {(len(linked_cards) - 1)} to select a credit card "))
+                        card_num = int(input(f"Please enter a number in the selection menu to select a credit card "))
 
                     card = str(linked_cards[card_num])[10:-4]
 
