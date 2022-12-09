@@ -197,6 +197,7 @@ def main():
                         address_num = int(input(f"Please enter a number between 0 and {len(linked_addresses) - 1} to select an address "))
 
                     address_for_order = linked_addresses[address_num][0][1:-1].split(",")
+                    address_for_order[1] = address_for_order[1][1:-1]
                     print("DEBUG",address_for_order)
 
             if linked_addresses == [] or use_linked_address == "n":
