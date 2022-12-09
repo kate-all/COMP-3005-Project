@@ -53,6 +53,13 @@ def print_cards(cards):
     for i in range(len(cards)):
         print("{0:<20}".format(i), "{0:<30}".format(str(cards[i][0])))
 
+def print_addresses(addresses):
+    print("{0:<20}".format("Selection #"), "{0:<20}".format("Street Number"), "{0:<30}".format("Street"), "{0:<20}".format("Postal Code"))
+    for i in range(len(addresses)):
+        address = addresses[i][0][1:-1].split(",")
+        print("{0:<20}".format(i), "{0:<20}".format(address[0]), "{0:<30}".format(address[1].strip('"')), "{0:<20}".format(address[2]))
+
+
 def main():
     cur = None
     selected = None
@@ -227,15 +234,13 @@ def main():
                     use_linked_address =input("Please type y to use a linked address or n to use a new address_for_order ")
 
                 if use_linked_address == "y":
-                    for i in range(len(linked_addresses)):
-                        print(i,"-",linked_addresses[i])
+                    print_addresses(linked_addresses)
                     address_num = int(input(f"Enter a number in the selection menu to select "))
                     while address_num < 0 or address_num >= len(linked_addresses):
                         address_num = int(input(f"Please enter a number in the selection menu to select an address "))
 
                     address_for_order = linked_addresses[address_num][0][1:-1].split(",")
                     address_for_order[1] = address_for_order[1][1:-1]
-                    print("DEBUG",address_for_order)
 
             if linked_addresses == [] or use_linked_address == "n":
                 street_num = input("Street num: ")
@@ -256,8 +261,6 @@ def main():
                     use_linked_card =input("Please type y to use a linked credit card or n to use a new card ")
 
                 if use_linked_card == "y":
-                    for i in range(len(linked_cards)):
-                        print(i,"-",linked_cards[i])
                     print_cards(linked_cards)
                     card_num = int(input(f"Enter a number in the selection menu to select "))
                     while card_num < 0 or card_num >= len(linked_cards):
