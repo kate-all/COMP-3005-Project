@@ -400,20 +400,22 @@ def create_triggers(cur):
     execute_query(cur, reorder_trigger)
 
 def connect_to_db():
+    password = open("password.txt","r").read()
     con = psycopg2.connect(
         database="LookInnaBook",
         user="postgres",
-        password="3005proj")
+        password=password)
 
     con.autocommit = True
     return con.cursor()
 
 
 def create_database():
+    password = open("password.txt","r").read()
     con = psycopg2.connect(
         database="postgres",
         user="postgres",
-        password="3005proj",
+        password=password,
         host="127.0.0.1",
         port="5432"
     )
