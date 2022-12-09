@@ -294,7 +294,11 @@ def main():
                 break
 
         elif command == "track":
-            print(bl.get_order(cur, full_command[1]))
+            output = bl.get_order(cur, full_command[1])
+            print("Order number:", output[0])
+            print("Address:",output[3],output[2],output[1])
+            print("Current City:",output[4])
+            print("ETA:",str(output[5]))
 
         elif command == "add_book":
             publisher_name = input("Publisher name: ")
