@@ -139,9 +139,9 @@ VALUES
     (1234567890123, 'Murder On The Rue Morgue', 265, 12.99, 2, 1, 30, 5.99, 5, 'abcdefghij'),
     (0987654321098, 'Don Quixote', 450, 15.49, 5, 2, 35, 6.99, 5, 'abcdefghij'),
     (2468013579123, 'Oliver Twist', 1000, 25.00, 1, 0, 20, 10.00, 5, 'bcdefghijk'),
-    (1357924680123, 'Othello (w/ translations)', 300, 35.00, 10, 1, 40, 20.00, 5, 'theoldbard'),
-    (1357924680124, 'Merchant of Venice (w/ translations)', 350, 35.00, 18, 1, 40, 20.00, 5, 'theoldbard'),
-    (1357924680122, 'Romeo and Juliet (w/ translations)', 375, 35.00, 5, 4, 40, 20.00, 5, 'theoldbard');
+    (1357924680123, 'Othello', 300, 35.00, 10, 1, 40, 20.00, 5, 'theoldbard'),
+    (1357924680124, 'Merchant of Venice', 350, 35.00, 18, 1, 40, 20.00, 5, 'theoldbard'),
+    (1357924680122, 'Romeo and Juliet', 375, 35.00, 5, 4, 40, 20.00, 0, 'theoldbard');
 
 INSERT INTO ADDRESS (street_num, street, city, province, country, postal_code)
 VALUES
