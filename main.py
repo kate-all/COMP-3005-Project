@@ -48,6 +48,11 @@ def print_books(books):
         title = book[0][15:-1].strip('"')
         print("{0:<30}".format(isbn), "{0:<30}".format(title))
 
+def print_cards(cards):
+    print("{0:<20}".format("Selection $"), "{0:<30}".format("Card Number"))
+    for card in cards:
+        card
+
 def main():
     cur = None
     selected = None
@@ -102,7 +107,7 @@ def main():
             selected = int(full_command[1])
             output = bl.get_book(cur, selected, user_type)
 
-            book_info = output[0][0][1:-1]
+            book_info = output[0][0][1:-1].split(",")
             authors = ""
             for author in output[1]:
                 if author[0] == None:
