@@ -3,8 +3,8 @@ import business_logic as bl
 
 customer_menu = {"menu": "- Show this command menu again",
                  "search": "<field> <value> - Search for a book by field. Ex. search genre romance",
-                 "search": "<field> <operator> <value> - Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
-                 "search": "available - See all available books",
+                 "search <field> <operator> <value>": "- Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
+                 "search available": "- See all available books",
                  "select": "<isbn> - Select a book by its isbn to see more information",
                  "unselect": "- Unselect current selected book",
                  "login": "- Login to your account",
@@ -18,8 +18,8 @@ customer_menu = {"menu": "- Show this command menu again",
 
 employee_menu = {"menu": "- Show this command menu again",
                  "search": "<field> <value> - Search for a book by field. Ex. search genre romance",
-                 "search": "<field> <operator> <value> - Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
-                 "search": "available - See all available books",
+                 "search <field> <operator> <value>": "- Search for a book by numerical value of price or page count (ex. search page_count < 800)\n\t\t\t\t\tDo not include $ in the price",
+                 "search available": "- See all available books",
                  "select": "<isbn> - Select a book by its isbn to see more information",
                  "unselect": "- Unselect current selected book",
                  "add_book": "- Add a book to the catalog",
@@ -53,6 +53,7 @@ def main():
     first_time = input("Is this your first time using our CLI app? (y/n) ")
     while first_time != "y" and first_time != "n":
         print("Oops! You have to tell us if it's your first time using the app. I promise it's relevant!")
+        first_time = input("Is this your first time using our CLI app? (y/n) ")
 
     if first_time == "y":
         print("Welcome! \nGenerating our database for you... This may take a moment")
@@ -195,8 +196,8 @@ def main():
                     while address_num < 0 or address_num >= len(linked_addresses):
                         address_num = int(input(f"Please enter a number between 0 and {len(linked_addresses) - 1} to select an address "))
 
-                    address_for_order = tuple(linked_addresses[address_num][0][1:-1].split(","))
-                    #address_for_order[]
+                    address_for_order = linked_addresses[address_num][0][1:-1].split(",")
+                    print("DEBUG",address_for_order)
 
             if linked_addresses == [] or use_linked_address == "n":
                 street_num = input("Street num: ")
@@ -263,7 +264,7 @@ def main():
                 p_id = bl.add_publisher(cur, publisher_name, p_email, p_phone_num, p_bank_acc)
 
             else:
-                p_id = str(p_id[0])[10:-4]
+                p_id = p_id[0][0]
 
             isbn = input("ISBN: ")
             title = input("Title: ")
