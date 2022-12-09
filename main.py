@@ -356,7 +356,12 @@ def main():
             print(report[2])
 
         elif command=="view_reorder_list":
-            print(bl.reorder_list(cur));
+            output = bl.reorder_list(cur)
+            print("{0:<30}".format("Publisher Email"), "{0:<20}".format("ISBN"), "{0:<30}".format("Reorder Quantity"))
+            for row in output:
+                print("{0:<30}".format(row[0]), "{0:<20}".format(row[1]), "{0:<30}".format(row[2]))
+
+
 
         else:
             print("Command not found. Please try again")
